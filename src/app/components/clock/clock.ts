@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
+import { WeatherComponent } from '../weather/weather';
+
 @Component({
   selector: 'app-clock',
-  imports: [CommonModule],
+  imports: [CommonModule, WeatherComponent],
   templateUrl: './clock.html',
   styleUrl: './clock.scss',
 })
