@@ -53,9 +53,7 @@ export class Clock implements OnInit, OnDestroy {
 
     // Date
     this.day = now.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-
     this.month = now.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-
     this.date = now.getDate().toString().padStart(2, '0');
   }
 }

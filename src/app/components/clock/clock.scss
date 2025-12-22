@@ -1,59 +1,95 @@
+/* ==============================
+   Design Tokens
+================================ */
+$color-bg: #ffffff;
+$color-ring-outer: #e5e5e5;
+$color-ring-inner: #ededed;
+$color-tick-minor: #d5d5d5;
+$color-primary: #111111;
+$color-pill-bg: #f6f6f6;
+
+$clock-size: 26.25rem;
+$center-dot-size: 0.875rem;
+
+$ring-outer-width: 0.375rem;
+$ring-inner-width: 0.125rem;
+$ring-inner-offset: 0.875rem;
+
+$tick-minor-width: 0.0625rem;
+$tick-minor-height: 0.5rem;
+$tick-major-width: 0.125rem;
+$tick-major-height: 0.875rem;
+
+$pill-padding: 0.5rem 1.125rem;
+$pill-radius: 0.625rem;
+$pill-font-size: 0.875rem;
+
+$hand-color: $color-primary;
+
+/* ==============================
+   Layout
+================================ */
 .clock-wrapper {
   display: grid;
   place-items: center;
   height: 100vh;
-  background: #fff;
+  background: $color-bg;
 }
 
 .clock {
   position: relative;
-  width: 420px;
-  height: 420px;
+  width: $clock-size;
+  height: $clock-size;
   border-radius: 50%;
   display: grid;
   place-items: center;
 }
 
-/* rings */
+/* ==============================
+   Rings
+================================ */
 .ring {
   position: absolute;
   inset: 0;
   border-radius: 50%;
+
+  &-outer {
+    border: $ring-outer-width solid $color-ring-outer;
+  }
+
+  &-inner {
+    inset: $ring-inner-offset;
+    border: $ring-inner-width solid $color-ring-inner;
+  }
 }
 
-.ring-outer {
-  border: 6px solid #e5e5e5;
-}
-
-.ring-inner {
-  inset: 14px;
-  border: 2px solid #ededed;
-}
-
-/* ticks */
+/* ==============================
+   Ticks
+================================ */
 .ticks {
   position: absolute;
-  inset: 26px;
+  inset: 1.625rem;
 }
 
 .tick {
   position: absolute;
-  width: 1px;
-  height: 8px;
-  background: #d5d5d5;
   top: 0;
   left: 50%;
-  transform-origin: center 184px;
+  width: $tick-minor-width;
+  height: $tick-minor-height;
+  background: $color-tick-minor;
+  transform-origin: center 11.5rem;
+
+  &.major {
+    width: $tick-major-width;
+    height: $tick-major-height;
+    background: $color-primary;
+  }
 }
 
-.tick.major {
-  width: 2px;
-  height: 14px;
-  background: #111;
-}
-
-/* GRID HAND LAYERS (KEY PART) */
-/* Hand layers rotate */
+/* ==============================
+   Hand Layers (Rotation Containers)
+================================ */
 .hand-layer {
   position: absolute;
   inset: 0;
@@ -62,69 +98,72 @@
   border-radius: 50%;
 }
 
-/* Wrapper is centered */
+/* Center pivot */
 .hand-wrapper {
   position: relative;
-  height: 0;
   width: 0;
+  height: 0;
 }
 
-/* Hands extend UP from center */
+/* ==============================
+   Hands
+================================ */
 .hand {
   position: absolute;
-  bottom: 0; /* 🔑 START at center */
+  bottom: 0; // start from center
   left: 50%;
   transform: translateX(-50%);
   transform-origin: center bottom;
-  background: #111;
+  background: $hand-color;
+
+  &.second {
+    width: 0.125rem;
+    height: 10rem;
+  }
+
+  &.minute {
+    width: 0.25rem;
+    height: 8.125rem;
+  }
+
+  &.hour {
+    width: 0.375rem;
+    height: 5.625rem;
+  }
 }
 
-/* Individual hands */
-.second {
-  width: 2px;
-  height: 160px;
-}
-
-.minute {
-  width: 4px;
-  height: 130px;
-}
-
-.hour {
-  width: 6px;
-  height: 90px;
-}
-
-/* center */
+/* ==============================
+   Center Dot
+================================ */
 .center-dot {
   position: absolute;
-  width: 14px;
-  height: 14px;
-  background: #fff;
-  border: 3px solid #111;
+  width: $center-dot-size;
+  height: $center-dot-size;
+  background: $color-bg;
+  border: 0.1875rem solid $color-primary;
   border-radius: 50%;
 }
 
-/* date */
-.date-pill {
+/* ==============================
+   Pills
+================================ */
+%pill-base {
   position: absolute;
-  top: 90px;
-  padding: 8px 18px;
-  background: #f6f6f6;
-  border-radius: 10px;
-  font-size: 14px;
+  padding: $pill-padding;
+  background: $color-pill-bg;
+  border-radius: $pill-radius;
+  font-size: $pill-font-size;
   font-weight: 600;
 }
 
-/* weather */
+.date-pill {
+  @extend %pill-base;
+  top: 5.625rem;
+}
+
 .weather-pill {
-  position: absolute;
-  bottom: 90px;
-  padding: 8px 18px;
-  background: #f6f6f6;
-  border-radius: 10px;
+  @extend %pill-base;
+  bottom: 5.625rem;
   display: flex;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  gap: 0.375rem;
 }
