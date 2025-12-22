@@ -108,3 +108,36 @@ Weather is fetched once on application load
 Default location is set in the component (can be replaced with browser geolocation)
 
 No aggressive polling is used, as real-time updates are unnecessary for a clock widget
+
+## 🤖 Prompts Used (AI Assistance Disclosure)
+
+AI tools were used to **assist and accelerate development**, primarily for validation, refactoring, and UI geometry reasoning. All architectural decisions, integrations, and final implementations were reviewed and implemented by the author.
+
+Below are representative prompts used during development:
+
+### Clock Geometry & Alignment
+
+- “How can I build an analogue clock in Angular with perfectly aligned hands and no sub-pixel drift?”
+- “Explain why `translateX(-50%)` causes second-hand misalignment and how to fix it.”
+- “Refactor an analogue clock to use grid-based rotation layers instead of rotating the hand itself.”
+
+### Performance
+
+- “How to avoid snapping when rotating from 360° back to 0° using CSS transforms.”
+
+### Styling & UI Polish
+
+- “Refactor CSS into SCSS using design tokens and reusable patterns.”
+- “Make clock hands taper like Apple Clock using pure CSS.”
+
+### Angular Architecture (Angular 21)
+
+- “Convert class-based HTTP interceptor to Angular 21 functional interceptor.”
+- “Fix HttpClient provider error in Angular 21 standalone applications.”
+
+### Weather Integration
+
+- “Integrate OpenWeather API (free tier) into an Angular standalone application.”
+- “Display weather icons using OpenWeather official icon set.”
+
+AI-generated suggestions were selectively applied, adapted, or discarded based on suitability, correctness, and alignment with Angular best practices.
