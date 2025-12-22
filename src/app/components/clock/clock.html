@@ -1,0 +1,35 @@
+<div class="clock-wrapper">
+  <div class="clock">
+    <!-- Outer Rings -->
+    <div class="ring ring-outer"></div>
+    <div class="ring ring-inner"></div>
+
+    <!-- Hour Markers -->
+    <div class="markers">
+      <span
+        *ngFor="let m of markers"
+        class="marker"
+        [class.major]="m % 5 === 0"
+        [style.transform]="'rotate(' + m * 6 + 'deg)'"
+      >
+      </span>
+    </div>
+
+    <!-- Date pill -->
+    <div class="date-pill">{{ day }}, {{ month }} {{ date }}</div>
+
+    <!-- Hands -->
+    <div class="hand hour" [style.transform]="hourTransform"></div>
+    <div class="hand minute" [style.transform]="minuteTransform"></div>
+    <div class="hand second" [style.transform]="secondTransform"></div>
+
+    <!-- Center -->
+    <div class="center-dot"></div>
+
+    <!-- Weather pill -->
+    <div class="weather-pill">
+      <img [src]="weatherIcon" alt="weather" />
+      <span>{{ temperature }}°C</span>
+    </div>
+  </div>
+</div>
