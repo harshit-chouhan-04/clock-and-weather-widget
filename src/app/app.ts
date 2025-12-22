@@ -9,5 +9,5 @@ import { Clock } from './components/clock/clock';
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('clock-and-weather-widget');
+  public readonly title = signal('clock-and-weather-widget');
 }

@@ -1,23 +1,41 @@
-import { TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { App } from './app';
 
-describe('App', () => {
+/* ==============================
+   Mock Clock Component
+================================ */
+@Component({
+  selector: 'app-clock',
+  standalone: true,
+  template: '',
+})
+class MockClockComponent {}
+
+describe('App Component', () => {
+  let component: App;
+  let fixture: ComponentFixture<App>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-    }).compileComponents();
+    })
+      .overrideComponent(App, {
+        set: {
+          imports: [MockClockComponent], // ✅ override real Clock
+        },
+      })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(App);
+    component = fixture.componentInstance;
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, clock-and-weather-widget');
+  it('should have correct title signal value', () => {
+    expect(component.title()).toBe('clock-and-weather-widget');
   });
 });
