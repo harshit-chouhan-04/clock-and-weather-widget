@@ -1,59 +1,110 @@
-# ClockAndWeatherWidget
+# Clock & Weather Widget
+
+A modern Angular application that displays a **pixel-accurate analogue clock** with **real-time weather information**.
+
+This project focuses on **visual accuracy**, **clean Angular architecture**, and **robust UI behavior** (smooth animations, precise alignment, and error handling).
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
 
-## Development server
+## ✨ Features
 
-To start a local development server, run:
+### Analogue Clock
+
+- Accurate analogue clock face matching the provided design
+- Smooth, continuous movement
+- Precisely aligned hands using **grid-based rotation layers**
+- Real-time synchronization with system clock
+
+### Weather Integration
+
+- Fetches live weather data using **OpenWeather API (free tier)**
+- Displays:
+  - Current temperature (°C)
+  - Weather condition icon
+- Uses OpenWeather official icon set
+- Clean API integration via Angular service
+
+### Technical Highlights
+
+- Built with **Angular 21 (standalone architecture)**
+- No SSR (browser-only for deterministic real-time UI)
+- Functional HTTP interceptor (`HttpInterceptorFn`)
+- SCSS with design tokens and reusable patterns
+- Clean separation of concerns:
+  - UI → Component
+  - Data → Service
+  - Cross-cutting concerns → Interceptor
+
+## 🛠️ Tech Stack
+
+- **Framework:** Angular 21
+- **Language:** TypeScript
+- **Styling:** SCSS
+- **API:** OpenWeather Current Weather API
+
+## ⚙️ Setup Instructions
+
+### 1️⃣ Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js** ≥ 18
+- **Angular CLI** ≥ 17
+
+Check versions:
 
 ```bash
-ng serve
+node -v
+ng version
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 2️⃣ Clone the Repository
 
 ```bash
-ng generate component component-name
+git clone https://github.com/harshit-chouhan-04/clock-and-weather-widget.git
+cd clock-and-weather-widget
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 3️⃣ Install Dependencies
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
+### 4️⃣ Configure OpenWeather API Key
 
-To build the project run:
+- Sign up at: [https://openweathermap.org/api](https://openweathermap.org/api)
+- Obtain a Current Weather Data API key
+- Update the environment file:
 
-```bash
-ng build
+```
+export const environment = {
+  production: false,
+  openWeather: {
+    apiKey: 'YOUR_API_KEY_HERE',
+    baseUrl: 'https://api.openweathermap.org/data/2.5/weather',
+  },
+  encryptionKey: 'YOUR_ENCRYPTION_KEY_HERE',
+  enableEncryption: true,
+};
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 5️⃣ Run the Application
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```
+npm run start
 ```
 
-## Running end-to-end tests
+Open your browser at:
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```
+http://localhost:4200
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 🌦️ Weather Behavior
 
-## Additional Resources
+Weather is fetched once on application load
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Default location is set in the component (can be replaced with browser geolocation)
+
+No aggressive polling is used, as real-time updates are unnecessary for a clock widget
