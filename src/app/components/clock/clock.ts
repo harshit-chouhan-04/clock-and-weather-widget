@@ -8,60 +8,54 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   styleUrl: './clock.scss',
 })
 export class Clock implements OnInit, OnDestroy {
-  markers = Array.from({ length: 60 }, (_, i) => i);
+  /* ===== CLOCK MARKERS ===== */
+  ticks = Array.from({ length: 60 }, (_, i) => i);
 
-  hourTransform = '';
-  minuteTransform = '';
-  secondTransform = '';
+  /* ===== HAND ROTATION STRINGS ===== */
+  secondLayerTransform = 'rotate(0deg)';
+  minuteLayerTransform = 'rotate(0deg)';
+  hourLayerTransform = 'rotate(0deg)';
 
+  /* ===== DATE DISPLAY ===== */
   day = '';
   month = '';
   date = '';
 
-  temperature = 9;
-  weatherIcon = 'https://openweathermap.org/img/wn/03d@2x.png';
-
-  private timer!: number;
-
-  private lastSecond = 0;
-  private secondBaseRotation = 0;
+  /* ===== TIMER ===== */
+  private timerId!: number;
 
   ngOnInit(): void {
     this.updateClock();
-    this.timer = window.setInterval(() => this.updateClock(), 1000);
+    this.timerId = window.setInterval(() => {
+      this.updateClock();
+    }, 1000);
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.timer);
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
   }
 
+  /* ===== CORE CLOCK LOGIC ===== */
   updateClock(): void {
     const now = new Date();
 
-    // Use continuous time (do NOT round)
-    const rawSeconds = now.getSeconds() + now.getMilliseconds() / 1000;
-    const rawMinutes = now.getMinutes() + rawSeconds / 60;
-    const rawHours = (now.getHours() % 12) + rawMinutes / 60;
+    // Seconds, minutes, hours
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = now.getHours() % 12;
 
-    const currentSecond = Math.floor(rawSeconds);
+    // Rotate GRID LAYERS (NOT HANDS)
+    this.secondLayerTransform = `rotate(${seconds * 6}deg)`;
+    this.minuteLayerTransform = `rotate(${minutes * 6}deg)`;
+    this.hourLayerTransform = `rotate(${hours * 30 + minutes * 0.5}deg)`;
 
-    // Detect full sweep completion (59 → 0)
-    if (currentSecond < this.lastSecond) {
-      this.secondBaseRotation += 360;
-    }
-
-    this.lastSecond = currentSecond;
-
-    // Apply cumulative rotation
-    const secondAngle = this.secondBaseRotation + rawSeconds * 6;
-
-    this.secondTransform = `translateX(-50%) rotate(${secondAngle}deg)`;
-    this.minuteTransform = `translateX(-50%) rotate(${rawMinutes * 6}deg)`;
-    this.hourTransform = `translateX(-50%) rotate(${rawHours * 30}deg)`;
-
-    // Date display
+    // Date
     this.day = now.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+
     this.month = now.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+
     this.date = now.getDate().toString().padStart(2, '0');
   }
 }

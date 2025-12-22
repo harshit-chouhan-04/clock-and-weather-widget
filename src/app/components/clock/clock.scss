@@ -1,9 +1,8 @@
 .clock-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #ffffff;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  background: #fff;
 }
 
 .clock {
@@ -11,14 +10,15 @@
   width: 420px;
   height: 420px;
   border-radius: 50%;
-  background: #fff;
+  display: grid;
+  place-items: center;
 }
 
-/* Rings */
+/* rings */
 .ring {
   position: absolute;
-  border-radius: 50%;
   inset: 0;
+  border-radius: 50%;
 }
 
 .ring-outer {
@@ -30,13 +30,13 @@
   border: 2px solid #ededed;
 }
 
-/* Markers */
-.markers {
+/* ticks */
+.ticks {
   position: absolute;
-  inset: 18px;
+  inset: 26px;
 }
 
-.marker {
+.tick {
   position: absolute;
   width: 1px;
   height: 8px;
@@ -46,49 +46,56 @@
   transform-origin: center 184px;
 }
 
-.marker.major {
-  height: 14px;
+.tick.major {
   width: 2px;
+  height: 14px;
   background: #111;
 }
 
-/* Hands */
+/* GRID HAND LAYERS (KEY PART) */
+/* Hand layers rotate */
+.hand-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+
+/* Wrapper is centered */
+.hand-wrapper {
+  position: relative;
+  height: 0;
+  width: 0;
+}
+
+/* Hands extend UP from center */
 .hand {
   position: absolute;
+  bottom: 0; /* 🔑 START at center */
   left: 50%;
-  bottom: 50%;
-  transform-origin: bottom center;
   transform: translateX(-50%);
+  transform-origin: center bottom;
+  background: #111;
 }
 
-.hour {
-  width: 6px;
-  height: 90px;
-  background: #111;
-  border-radius: 4px;
+/* Individual hands */
+.second {
+  width: 2px;
+  height: 160px;
 }
 
 .minute {
   width: 4px;
   height: 130px;
-  background: #111;
-  border-radius: 4px;
 }
 
-.second {
-  position: absolute;
-
-  width: 2px;
-  height: 160px;
-  background: #111;
-
-  left: 50%;
-  bottom: 50%;
-
-  transform-origin: center bottom;
+.hour {
+  width: 6px;
+  height: 90px;
 }
 
-/* Center */
+/* center */
 .center-dot {
   position: absolute;
   width: 14px;
@@ -96,43 +103,28 @@
   background: #fff;
   border: 3px solid #111;
   border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
 }
 
-/* Date pill */
+/* date */
 .date-pill {
   position: absolute;
   top: 90px;
-  left: 50%;
-  transform: translateX(-50%);
   padding: 8px 18px;
-  border-radius: 10px;
   background: #f6f6f6;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 1px;
 }
 
-/* Weather pill */
+/* weather */
 .weather-pill {
   position: absolute;
   bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
   padding: 8px 18px;
-  border-radius: 10px;
   background: #f6f6f6;
+  border-radius: 10px;
+  display: flex;
+  gap: 6px;
   font-size: 14px;
   font-weight: 600;
-}
-
-.weather-pill img {
-  width: 20px;
-  height: 20px;
 }

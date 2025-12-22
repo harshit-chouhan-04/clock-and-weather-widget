@@ -1,35 +1,51 @@
 <div class="clock-wrapper">
   <div class="clock">
-    <!-- Outer Rings -->
+    <!-- outer rings -->
     <div class="ring ring-outer"></div>
     <div class="ring ring-inner"></div>
 
-    <!-- Hour Markers -->
-    <div class="markers">
+    <!-- ticks -->
+    <div class="ticks">
       <span
-        *ngFor="let m of markers"
-        class="marker"
-        [class.major]="m % 5 === 0"
-        [style.transform]="'rotate(' + m * 6 + 'deg)'"
+        *ngFor="let t of ticks"
+        class="tick"
+        [class.major]="t % 5 === 0"
+        [style.transform]="'rotate(' + t * 6 + 'deg)'"
       >
       </span>
     </div>
 
-    <!-- Date pill -->
+    <!-- date pill -->
     <div class="date-pill">{{ day }}, {{ month }} {{ date }}</div>
 
-    <!-- Hands -->
-    <div class="hand hour" [style.transform]="hourTransform"></div>
-    <div class="hand minute" [style.transform]="minuteTransform"></div>
-    <div class="hand second" [style.transform]="secondTransform"></div>
+    <!-- SECOND -->
+    <div class="hand-layer second-layer" [style.transform]="secondLayerTransform">
+      <div class="hand-wrapper">
+        <div class="hand second"></div>
+      </div>
+    </div>
 
-    <!-- Center -->
+    <!-- MINUTE -->
+    <div class="hand-layer minute-layer" [style.transform]="minuteLayerTransform">
+      <div class="hand-wrapper">
+        <div class="hand minute"></div>
+      </div>
+    </div>
+
+    <!-- HOUR -->
+    <div class="hand-layer hour-layer" [style.transform]="hourLayerTransform">
+      <div class="hand-wrapper">
+        <div class="hand hour"></div>
+      </div>
+    </div>
+
+    <!-- center -->
     <div class="center-dot"></div>
 
-    <!-- Weather pill -->
+    <!-- weather -->
     <div class="weather-pill">
-      <img [src]="weatherIcon" alt="weather" />
-      <span>{{ temperature }}°C</span>
+      <span>☁</span>
+      <span>9°C</span>
     </div>
   </div>
 </div>
