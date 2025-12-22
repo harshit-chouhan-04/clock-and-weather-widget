@@ -7,7 +7,7 @@ import { HttpService } from './http.service';
   providedIn: 'root',
 })
 export class WeatherService {
-  constructor(private http: HttpService) {}
+  constructor(public http: HttpService) {}
 
   getCurrentWeather(lat: number, lon: number) {
     const { apiKey } = environment.openWeather;

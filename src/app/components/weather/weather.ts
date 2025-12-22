@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WeatherService } from '../../services/weather';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-weather',
@@ -7,17 +9,34 @@ import { WeatherService } from '../../services/weather';
   templateUrl: './weather.html',
   styleUrl: './weather.scss',
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent implements OnInit, OnDestroy {
   temperature!: number;
   weatherIcon = '';
 
-  constructor(private weatherService: WeatherService) {}
+  constructor(
+    private weatherService: WeatherService,
+    private localStorageService: LocalStorageService
+  ) {}
 
   ngOnInit(): void {
     this.loadWeather();
   }
 
   loadWeather(): void {
+    const weatherData = this.localStorageService.get('weatherData');
+
+    if (weatherData) {
+      const currentTime = Date.now();
+      const dataAge = currentTime - weatherData.timestamp;
+
+      // If data is less than 30 minutes old, use cached data
+      if (dataAge < 30 * 60 * 1000) {
+        this.temperature = weatherData.temperature;
+        this.weatherIcon = weatherData.weatherIcon;
+        return;
+      }
+    }
+
     const lat = 51.5074;
     const lon = -0.1278;
 
@@ -25,10 +44,22 @@ export class WeatherComponent implements OnInit {
       next: (data) => {
         this.temperature = Math.round(data.main.temp);
         this.weatherIcon = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+
+        this.localStorageService.set('weatherData', {
+          temperature: this.temperature,
+          weatherIcon: this.weatherIcon,
+          lat,
+          lon,
+          timestamp: Date.now(),
+        });
       },
       error: (err) => {
         console.error('Weather API error', err);
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.weatherService.http.cancelAllRequests();
   }
 }
