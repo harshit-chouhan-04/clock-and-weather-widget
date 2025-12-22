@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WeatherService } from '../../services/weather';
+
 import { LocalStorageService } from '../../services/local-storage.service';
-import { timestamp } from 'rxjs';
+import { WeatherService } from '../../services/weather';
 
 @Component({
   selector: 'app-weather',
@@ -37,8 +37,18 @@ export class WeatherComponent implements OnInit, OnDestroy {
       }
     }
 
-    const lat = 51.5074;
-    const lon = -0.1278;
+    let lat = 51.5074;
+    let lon = -0.1278;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        lat = position.coords.latitude;
+        lon = position.coords.longitude;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
 
     this.weatherService.getCurrentWeather(lat, lon).subscribe({
       next: (data) => {
