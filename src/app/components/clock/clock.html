@@ -6,13 +6,13 @@
 
     <!-- ticks -->
     <div class="ticks">
+      @for (t of ticks; track t) {
       <span
-        *ngFor="let t of ticks"
         class="tick"
         [class.major]="t % 5 === 0"
         [style.transform]="'rotate(' + t * 6 + 'deg)'"
-      >
-      </span>
+      ></span>
+      }
     </div>
 
     <!-- date pill -->
