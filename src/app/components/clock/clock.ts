@@ -24,18 +24,22 @@ export class Clock implements OnInit, OnDestroy {
   date = '';
 
   /* ===== TIMER ===== */
-  private timerId!: number;
+  private rafId: number | null = null;
+
+  private loop = () => {
+    this.updateClock();
+    this.rafId = requestAnimationFrame(this.loop);
+  };
 
   ngOnInit(): void {
     this.updateClock();
-    this.timerId = window.setInterval(() => {
-      this.updateClock();
-    }, 1000);
+    this.rafId = requestAnimationFrame(this.loop);
   }
 
   ngOnDestroy(): void {
-    if (this.timerId) {
-      clearInterval(this.timerId);
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
     }
   }
 
@@ -43,15 +47,15 @@ export class Clock implements OnInit, OnDestroy {
   updateClock(): void {
     const now = new Date();
 
-    // Seconds, minutes, hours
-    const seconds = now.getSeconds();
-    const minutes = now.getMinutes();
-    const hours = now.getHours() % 12;
+    // Fractional seconds, minutes, hours for smooth movement
+    const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+    const minutes = now.getMinutes() + seconds / 60;
+    const hours = (now.getHours() % 12) + minutes / 60;
 
-    // Rotate GRID LAYERS (NOT HANDS)
+    // Rotate GRID LAYERS (NOT HANDS) — now using smooth fractional values
     this.secondLayerTransform = `rotate(${seconds * 6}deg)`;
     this.minuteLayerTransform = `rotate(${minutes * 6}deg)`;
-    this.hourLayerTransform = `rotate(${hours * 30 + minutes * 0.5}deg)`;
+    this.hourLayerTransform = `rotate(${hours * 30}deg)`;
 
     // Date
     this.day = now.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
