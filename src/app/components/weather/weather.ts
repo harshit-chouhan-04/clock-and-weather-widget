@@ -44,12 +44,17 @@ export class WeatherComponent implements OnInit, OnDestroy {
       (position) => {
         lat = position.coords.latitude;
         lon = position.coords.longitude;
+
+        this.fetchWeatherData(lat, lon);
       },
       (error) => {
         console.log(error);
+        this.fetchWeatherData(lat, lon);
       }
     );
+  }
 
+  fetchWeatherData(lat: number, lon: number): void {
     this.weatherService.getCurrentWeather(lat, lon).subscribe({
       next: (data) => {
         this.temperature = Math.round(data.main.temp);
